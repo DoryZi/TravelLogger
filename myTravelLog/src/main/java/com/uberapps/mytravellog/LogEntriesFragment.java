@@ -17,7 +17,6 @@ import com.countrypicker.CountryPicker;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.uberapps.mytravellog.EditEntryFragment.EntryUpdatedListener;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class LogEntriesFragment extends ListFragment implements OnClickListener,EntryUpdatedListener {
@@ -67,7 +66,6 @@ public class LogEntriesFragment extends ListFragment implements OnClickListener,
         setListAdapter(adapter);
 
 
-        HashMap<String,HashMap<String,Integer>> sum = m_dbHelper.getLocationsSummary();
         return rootView;
     }
     

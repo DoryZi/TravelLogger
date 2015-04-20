@@ -11,8 +11,6 @@ import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 
-import java.util.HashMap;
-
 
 public class MainActivity extends FragmentActivity {
 
@@ -27,14 +25,16 @@ public class MainActivity extends FragmentActivity {
         }
 
         // Initialize the ViewPager and set an adapter
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager()));
 
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabs.setViewPager(pager);
 
-    }
+     }
+
+
 
 
     @Override

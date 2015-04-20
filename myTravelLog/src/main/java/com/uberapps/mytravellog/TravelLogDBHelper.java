@@ -25,6 +25,9 @@ public class TravelLogDBHelper extends SQLiteOpenHelper {
     
     public static final String TEXT_TYPE = " TEXT";
     public static final String COMMA_SEP = ",";
+
+    public static final String FIRST_SIX_MONTH = "First 6 month this year";
+    public static final String THIS_YEAR = "This Year";
         
     public static SimpleDateFormat ISO8601_DATE_FORMATTER= null;
     
@@ -138,6 +141,7 @@ public class TravelLogDBHelper extends SQLiteOpenHelper {
         return retVal;
 	}
 
+
     public TravelLogEntry getLastEntryByToDate() {
         String lastEntryQuery = "SELECT * FROM " + TravelLogContract.TABLE_NAME  + " WHERE "
                 + LogEntry.COLUMN_NAME_TO + " in (SELECT max ("
@@ -164,8 +168,8 @@ public class TravelLogDBHelper extends SQLiteOpenHelper {
     public HashMap<String,HashMap<String,Integer>> getLocationsSummary() {
 
         HashMap<String,HashMap<String,Integer>> summaryByCountries = new HashMap<String,HashMap<String,Integer>>();
-        summaryByCountries.put("First 6 month this year",new HashMap<String,Integer>());
-        summaryByCountries.put("This Year",new HashMap<String,Integer>());
+        summaryByCountries.put(FIRST_SIX_MONTH,new HashMap<String,Integer>());
+        summaryByCountries.put(THIS_YEAR,new HashMap<String,Integer>());
 
         List<TravelLogEntry> allEntries = getAllEntries();
         Calendar calendar = Calendar.getInstance();
@@ -178,10 +182,15 @@ public class TravelLogDBHelper extends SQLiteOpenHelper {
         Date beginningOfYear = calendar.getTime();
 
         calendar.set(Calendar.MONTH,Calendar.JULY);
+        calendar.set(Calendar.HOUR,0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+        calendar.set(Calendar.DAY_OF_MONTH,1);
         Date afterSixMonth = calendar.getTime();
 
         calendar.set(Calendar.MONTH,Calendar.DECEMBER);
-
+        calendar.set(Calendar.DAY_OF_MONTH,31);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE,59);
         calendar.set(Calendar.SECOND,59);
@@ -189,23 +198,33 @@ public class TravelLogDBHelper extends SQLiteOpenHelper {
 
         for (int i = 0; i < allEntries.size(); ++i) {
             TravelLogEntry curEntry = allEntries.get(i);
-            checkAndAddEntryDaysIfMatchsRange(beginningOfYear,endOfYear,curEntry,summaryByCountries.get("This Year"));
+            checkAndAddEntryDaysIfMatchesRange(beginningOfYear, endOfYear, curEntry, summaryByCountries.get(THIS_YEAR));
+            checkAndAddEntryDaysIfMatchesRange(beginningOfYear,afterSixMonth,curEntry,summaryByCountries.get(FIRST_SIX_MONTH));
         }
 
         return summaryByCountries;
     }
 
-    private void checkAndAddEntryDaysIfMatchsRange(Date from, Date to, TravelLogEntry logEntry, HashMap<String,Integer> countrySummary) {
-        if (logEntry.getTo().after(from) && logEntry.getTo().before(to)) {
-            if (logEntry.getTo().before(to)) {
-                if (countrySummary.containsKey(logEntry.getCountry())) {
-                    countrySummary.put(logEntry.getCountry(), countrySummary.get(logEntry.getCountry()) + logEntry.getTotalDays());
-                } else {
-                    countrySummary.put(logEntry.getCountry(),logEntry.getTotalDays());
-                }
+    private void checkAndAddEntryDaysIfMatchesRange(Date from, Date to, TravelLogEntry logEntry, HashMap<String, Integer> countrySummary) {
+
+        // if entry end is after period start
+        if (logEntry.getTo().after(from) || logEntry.getFrom().before(to)) {
+
+            Integer daysToAdd = 0;
+            Date dateTo = logEntry.getTo().after(to) ? to : logEntry.getTo();
+            Date dateFrom = logEntry.getFrom().before(from) ? from : logEntry.getFrom();
+
+
+            daysToAdd = TravelLogDBHelper.dateDiffInDays(dateFrom,dateTo);
+
+            if (countrySummary.containsKey(logEntry.getCountry())) {
+                countrySummary.put(logEntry.getCountry(), countrySummary.get(logEntry.getCountry()) + daysToAdd);
+            } else {
+                countrySummary.put(logEntry.getCountry(),daysToAdd);
             }
         }
     }
+
 	// Updating single contact
 	public int updateLogEntry(TravelLogEntry logEntryToUpdate) {
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -230,4 +249,7 @@ public class TravelLogDBHelper extends SQLiteOpenHelper {
         db.close();
 	}
 
+    public static int dateDiffInDays(Date earlyDate, Date laterDate) {
+        return (int)( (laterDate.getTime() - earlyDate.getTime()) / (1000 * 60 * 60 * 24)) +1;
+    }
 }

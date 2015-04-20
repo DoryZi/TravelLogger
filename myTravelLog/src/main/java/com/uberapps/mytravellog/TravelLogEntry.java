@@ -75,11 +75,16 @@ public class TravelLogEntry {
     }
     
     public int getTotalDays () {
-    	return DayDifferenceFromTo(m_from);
+    	return dayDifferenceFromTo(m_from);
     }
     
-    public int DayDifferenceFromTo(Date dateToCompare) {
+    public int dayDifferenceFromTo(Date dateToCompare) {
     	return (int)( (m_to.getTime() - dateToCompare.getTime()) / (1000 * 60 * 60 * 24)) +1;
 
     }
+
+    public int dayDifferenceFromFrom(Date dateToCompare) {
+        return (int)( (m_from.getTime() - dateToCompare.getTime()) / (1000 * 60 * 60 * 24)) +1;
+    }
+
 }
