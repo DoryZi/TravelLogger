@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 30
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.uberapps.mytravellog"
-        minSdkVersion 14
-        targetSdkVersion 19
+        minSdkVersion 21
+        targetSdkVersion 30
     }
 
     buildTypes {
@@ -19,8 +19,7 @@ android {
 }
 
 dependencies {
-    compile project(':countryPicker')
-    compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'com.getbase:floatingactionbutton:1.9.0'
+    implementation project(':countryPicker')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.4.0'
 }

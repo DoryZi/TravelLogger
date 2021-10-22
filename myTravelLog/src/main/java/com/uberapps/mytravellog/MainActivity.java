@@ -1,16 +1,14 @@
 package com.uberapps.mytravellog;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.astuetz.PagerSlidingTabStrip;
-
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends FragmentActivity {
 
@@ -74,7 +72,7 @@ public class MainActivity extends FragmentActivity {
             Fragment fragment = null;
             switch (position) {
                 case 0:
-                    fragment = DashboardFragment.newInstance();
+                    fragment = DashboardFragment .newInstance();
                     break;
                 case 1:
                     fragment = LogEntriesFragment.newInstance();

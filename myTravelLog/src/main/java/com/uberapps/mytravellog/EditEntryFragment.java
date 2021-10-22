@@ -2,7 +2,6 @@ package com.uberapps.mytravellog;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -15,6 +14,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import androidx.fragment.app.DialogFragment;
 
 import com.countrypicker.CountryPicker;
 import com.countrypicker.CountryPickerListener;

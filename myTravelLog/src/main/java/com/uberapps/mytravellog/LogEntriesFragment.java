@@ -6,15 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import androidx.fragment.app.ListFragment;
+
 import com.countrypicker.CountryPicker;
-import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uberapps.mytravellog.EditEntryFragment.EntryUpdatedListener;
 
 import java.util.List;
@@ -94,7 +95,6 @@ public class LogEntriesFragment extends ListFragment implements OnClickListener,
 			createNewEntry();
 			break;
 		}
-		
 	}
 	
     @Override

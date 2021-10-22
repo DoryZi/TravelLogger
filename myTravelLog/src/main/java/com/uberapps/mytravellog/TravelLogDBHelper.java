@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class TravelLogDBHelper extends SQLiteOpenHelper {
+ class TravelLogDBHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME ="TravelLog.db";
 	private static final int DATABASE_VERSION = 1;
