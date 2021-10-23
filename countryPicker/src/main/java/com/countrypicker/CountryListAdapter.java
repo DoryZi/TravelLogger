@@ -17,7 +17,6 @@ import com.countrypicker.R.drawable;
 
 public class CountryListAdapter extends BaseAdapter {
 
-	private Context context;
 	List<Country> countries;
 	LayoutInflater inflater;
 
@@ -36,8 +35,7 @@ public class CountryListAdapter extends BaseAdapter {
 		try {
 			Class<drawable> res = R.drawable.class;
 			Field field = res.getField(drawableName);
-			int drawableId = field.getInt(null);
-			return drawableId;
+			return field.getInt(null);
 		} catch (Exception e) {
 			Log.e("COUNTRYPICKER", "Failure to get drawable id.", e);
 		}
@@ -52,9 +50,8 @@ public class CountryListAdapter extends BaseAdapter {
 	 */
 	public CountryListAdapter(Context context, List<Country> countries) {
 		super();
-		this.context = context;
 		this.countries = countries;
-		inflater = (LayoutInflater) this.context
+		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 

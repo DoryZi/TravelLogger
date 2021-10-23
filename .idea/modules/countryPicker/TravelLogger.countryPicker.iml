@@ -32,8 +32,10 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../countryPicker">
       <sourceFolder url="file://$MODULE_DIR$/../../../countryPicker/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../countryPicker/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../countryPicker/build/generated/res/resValues/debug" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../../countryPicker/build/generated/source/buildConfig/androidTest/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../countryPicker/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../countryPicker/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../countryPicker/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../countryPicker/src/main/res" type="java-resource" />

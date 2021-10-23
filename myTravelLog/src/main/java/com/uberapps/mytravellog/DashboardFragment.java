@@ -42,12 +42,11 @@ public class DashboardFragment extends Fragment {
 //     */
 //    // TODO: Rename and change types and number of parameters
     public static DashboardFragment newInstance() {
-        DashboardFragment fragment = new DashboardFragment();
         //Bundle args = new Bundle();
         //args.putString(ARG_PARAM1, param1);
         //args.putString(ARG_PARAM2, param2);
         //fragment.setArguments(args);
-        return fragment;
+        return new DashboardFragment();
     }
 
     public DashboardFragment() {
@@ -79,27 +78,14 @@ public class DashboardFragment extends Fragment {
         if (m_CurrentYearTextView != null) m_CurrentYearTextView.setText(buildSummaryString(Objects.requireNonNull(countriesSummary.get(TravelLogDBHelper.THIS_YEAR))));
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//
-//        // Make sure that we are currently visible
-//        if (!this.isVisible()) {
-//            // If we are becoming invisible, then...
-//            if (isVisibleToUser) {
-//                reloadData();
-//            }
-//        }
-//    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         reloadData();
     }
 
-    public String buildSummaryString(HashMap<String, Integer> hashmapForPeriod) {
-        String retVal = new String("");
+    public String buildSummaryString(@NonNull HashMap<String, Integer> hashmapForPeriod) {
+        String retVal = "";
         for (HashMap.Entry<String,Integer> entry : hashmapForPeriod.entrySet()) {
             retVal = retVal.concat(entry.getKey() + " - " + ((Integer)entry.getValue()).toString() + "\n");
         }
@@ -110,17 +96,6 @@ public class DashboardFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            //mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
         }
     }
 

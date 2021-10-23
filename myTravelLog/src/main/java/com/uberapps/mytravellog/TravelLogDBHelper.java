@@ -70,7 +70,7 @@ import java.util.TimeZone;
 		 
 	// Getting All Contacts
 	public List<TravelLogEntry> getAllEntries() {
-		List<TravelLogEntry> travelLogEntries = new ArrayList<TravelLogEntry>();
+		List<TravelLogEntry> travelLogEntries = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TravelLogContract.TABLE_NAME;
  
@@ -81,7 +81,7 @@ import java.util.TimeZone;
         if (cursor.moveToFirst()) {
             do {
                 TravelLogEntry logEntry = null;
-                Boolean doNotAdd = false;
+                boolean doNotAdd = false;
 				try {
 					logEntry = new TravelLogEntry(
 							Integer.parseInt(cursor.getString(0)),
@@ -167,9 +167,9 @@ import java.util.TimeZone;
 
     public HashMap<String,HashMap<String,Integer>> getLocationsSummary() {
 
-        HashMap<String,HashMap<String,Integer>> summaryByCountries = new HashMap<String,HashMap<String,Integer>>();
-        summaryByCountries.put(FIRST_SIX_MONTH,new HashMap<String,Integer>());
-        summaryByCountries.put(THIS_YEAR,new HashMap<String,Integer>());
+        HashMap<String,HashMap<String,Integer>> summaryByCountries = new HashMap<>();
+        summaryByCountries.put(FIRST_SIX_MONTH, new HashMap<>());
+        summaryByCountries.put(THIS_YEAR, new HashMap<>());
 
         List<TravelLogEntry> allEntries = getAllEntries();
         Calendar calendar = Calendar.getInstance();

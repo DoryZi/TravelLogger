@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.Objects;
 
 public class MainActivity extends FragmentActivity {
 
@@ -24,7 +27,9 @@ public class MainActivity extends FragmentActivity {
 
         // Initialize the ViewPager and set an adapter
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager()));
+        MainFragmentPagerAdapter adapter = new MainFragmentPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        pager.setAdapter(adapter);
 
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -56,10 +61,10 @@ public class MainActivity extends FragmentActivity {
 
     public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 2;
-        private String tabTitles[] = new String[] { "Travel Summary", "Log Entries"  };
+        private String[] tabTitles = new String[] { "Travel Summary", "Log Entries"  };
 
-        public MainFragmentPagerAdapter(FragmentManager fm) {
-            super(fm);
+        public MainFragmentPagerAdapter(FragmentManager fm, int behavior) {
+            super(fm, behavior);
         }
 
         @Override
@@ -67,6 +72,7 @@ public class MainActivity extends FragmentActivity {
             return PAGE_COUNT;
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
@@ -78,7 +84,7 @@ public class MainActivity extends FragmentActivity {
                     fragment = LogEntriesFragment.newInstance();
                     break;
             }
-            return fragment;
+            return Objects.requireNonNull(fragment);
         }
 
         @Override

@@ -14,15 +14,17 @@
         android:theme="@style/Theme.AppBaseTheme">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppBaseTheme.NoActionBar"
-            android:label="@string/app_name" >
+            android:theme="@style/Theme.AppBaseTheme"
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         
-        <receiver android:name=".MyTravelLogBroadcastReceiver" >
+        <receiver android:name=".MyTravelLogBroadcastReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
@@ -31,8 +33,7 @@
         
         <service
             android:name=".LogMyLocationService"
-            android:exported="true">
+            android:exported="false">
         </service>
     </application>
-
 </manifest>

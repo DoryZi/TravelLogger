@@ -3,14 +3,11 @@ package com.uberapps.mytravellog;
 import java.util.Comparator;
 import java.util.Date;
 
-
-
 public class TravelLogEntry {
 	int _id;
     Date m_from;
     Date m_to;
     String m_country;
-
 
     public static final Comparator<TravelLogEntry> TO_DATE_COMPARER = new Comparator<TravelLogEntry>() {
     	public int compare(TravelLogEntry lhs, TravelLogEntry rhs) {
@@ -82,9 +79,4 @@ public class TravelLogEntry {
     	return (int)( (m_to.getTime() - dateToCompare.getTime()) / (1000 * 60 * 60 * 24)) +1;
 
     }
-
-    public int dayDifferenceFromFrom(Date dateToCompare) {
-        return (int)( (m_from.getTime() - dateToCompare.getTime()) / (1000 * 60 * 60 * 24)) +1;
-    }
-
 }
