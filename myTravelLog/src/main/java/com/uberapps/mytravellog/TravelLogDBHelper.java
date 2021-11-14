@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.uberapps.mytravellog.TravelLogContract.LogEntry;
 
@@ -13,12 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Date;
-import java.util.TimeZone;
 
- class TravelLogDBHelper extends SQLiteOpenHelper {
+class TravelLogDBHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME ="TravelLog.db";
 	private static final int DATABASE_VERSION = 1;
@@ -28,13 +28,13 @@ import java.util.TimeZone;
 
     public static final String FIRST_SIX_MONTH = "First 6 month this year";
     public static final String THIS_YEAR = "This Year";
-        
+
     public static SimpleDateFormat ISO8601_DATE_FORMATTER= null;
     
 	public TravelLogDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		ISO8601_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
-		ISO8601_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone("UTC"));
+//		ISO8601_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
 	@Override
@@ -173,33 +173,24 @@ import java.util.TimeZone;
 
         List<TravelLogEntry> allEntries = getAllEntries();
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone(("UTC")));
+        Date endOfYear = calendar.getTime();
+        Log.d("DEBUG", String.valueOf(calendar.get(Calendar.DAY_OF_YEAR)));
+
         calendar.set(Calendar.DAY_OF_YEAR, 1);
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND,0);
-        calendar.set(Calendar.MILLISECOND,0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Date beginningOfYear = calendar.getTime();
 
-        calendar.set(Calendar.MONTH,Calendar.JULY);
-        calendar.set(Calendar.HOUR,0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND,0);
-        calendar.set(Calendar.MILLISECOND,0);
-        calendar.set(Calendar.DAY_OF_MONTH,1);
-        Date afterSixMonth = calendar.getTime();
-
-        calendar.set(Calendar.MONTH,Calendar.DECEMBER);
-        calendar.set(Calendar.DAY_OF_MONTH,31);
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE,59);
-        calendar.set(Calendar.SECOND,59);
-        Date endOfYear = calendar.getTime();
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -180);
+        Date beginningsOfSixMonth = calendar.getTime();
 
         for (int i = 0; i < allEntries.size(); ++i) {
             TravelLogEntry curEntry = allEntries.get(i);
+            checkAndAddEntryDaysIfMatchesRange(beginningsOfSixMonth, endOfYear,curEntry,summaryByCountries.get(FIRST_SIX_MONTH));
             checkAndAddEntryDaysIfMatchesRange(beginningOfYear, endOfYear, curEntry, summaryByCountries.get(THIS_YEAR));
-            checkAndAddEntryDaysIfMatchesRange(beginningOfYear,afterSixMonth,curEntry,summaryByCountries.get(FIRST_SIX_MONTH));
         }
 
         return summaryByCountries;
@@ -210,13 +201,14 @@ import java.util.TimeZone;
         // if entry end is after period start
         if (logEntry.getTo().after(from) || logEntry.getFrom().before(to)) {
 
-            Integer daysToAdd = 0;
             Date dateTo = logEntry.getTo().after(to) ? to : logEntry.getTo();
             Date dateFrom = logEntry.getFrom().before(from) ? from : logEntry.getFrom();
 
+            Integer daysToAdd = TravelLogDBHelper.dateDiffInDays(dateFrom,dateTo);
 
-            daysToAdd = TravelLogDBHelper.dateDiffInDays(dateFrom,dateTo);
-
+            if(daysToAdd < 1) {
+                return;
+            }
             if (countrySummary.containsKey(logEntry.getCountry())) {
                 countrySummary.put(logEntry.getCountry(), countrySummary.get(logEntry.getCountry()) + daysToAdd);
             } else {
@@ -226,7 +218,7 @@ import java.util.TimeZone;
     }
 
 	// Updating single contact
-	public int updateLogEntry(TravelLogEntry logEntryToUpdate) {
+	public void updateLogEntry(TravelLogEntry logEntryToUpdate) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 	    ContentValues values = new ContentValues();
@@ -235,11 +227,10 @@ import java.util.TimeZone;
 	    values.put(LogEntry.COLUMN_NAME_TO, TravelLogDBHelper.ISO8601_DATE_FORMATTER.format(logEntryToUpdate.getTo()));
 	 
 	        // updating row
-	    int returnVal =  db.update(TravelLogContract.TABLE_NAME, values, LogEntry._ID + " = ?",
+	    db.update(TravelLogContract.TABLE_NAME, values, LogEntry._ID + " = ?",
 	           new String[] { String.valueOf(logEntryToUpdate.getID()) });  
 	    db.close();
-	    return returnVal;
-	}
+    }
 	 
 	// Deleting single contact
 	public void deleteEntry(TravelLogEntry logEntryToDelete) {
@@ -250,6 +241,7 @@ import java.util.TimeZone;
 	}
 
     public static int dateDiffInDays(Date earlyDate, Date laterDate) {
-        return (int)( (laterDate.getTime() - earlyDate.getTime()) / (1000 * 60 * 60 * 24)) +1;
-    }
+	    int days = (int)(laterDate.getTime() - earlyDate.getTime()) / (1000 * 60 * 60 * 24);
+	    return  days + 1;
+	}
 }

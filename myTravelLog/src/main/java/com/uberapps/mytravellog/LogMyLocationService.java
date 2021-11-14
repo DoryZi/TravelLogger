@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import java.util.Calendar;
 import java.util.Date;
 
 public class LogMyLocationService extends IntentService {
@@ -34,16 +37,16 @@ public class LogMyLocationService extends IntentService {
      * stops the service, as appropriate.
      */
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleIntent(@NonNull Intent intent) {
         mCurrentCountry = intent.getStringExtra(MyTravelLogBroadcastReceiver.INTENT_EXTRA_COUNTRY_FIELD);
-        if (mCurrentCountry.isEmpty()) {
+        if (mCurrentCountry == null || mCurrentCountry.isEmpty()) {
             Log.e("TravelLogIntentService", "Empty country received! not updating!!");
             return;
         }
         updateEntriesForToday();
     }
 
-    protected void updateEntryToFieldToToday(TravelLogEntry logEntry) {
+    protected void updateEntryToFieldToToday(@NonNull TravelLogEntry logEntry) {
         logEntry.setTo(new Date());
         m_DBHelper.updateLogEntry(logEntry);
         sendEntryUpdateIntent();

@@ -1,6 +1,7 @@
 package com.uberapps.mytravellog;
 
-import android.app.Activity;
+//import static com.uberapps.mytravellog.TravelLogDBHelper.FIRST_SIX_MONTH;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -74,8 +77,14 @@ public class DashboardFragment extends Fragment {
     public void reloadData() {
         TravelLogDBHelper dbHelper = new TravelLogDBHelper(getActivity());
         HashMap<String,HashMap<String,Integer>> countriesSummary = dbHelper.getLocationsSummary();
-        if (m_LastSixMonthTextView != null) m_LastSixMonthTextView.setText(buildSummaryString(Objects.requireNonNull(countriesSummary.get(TravelLogDBHelper.FIRST_SIX_MONTH))));
-        if (m_CurrentYearTextView != null) m_CurrentYearTextView.setText(buildSummaryString(Objects.requireNonNull(countriesSummary.get(TravelLogDBHelper.THIS_YEAR))));
+        HashMap<String, Integer> hashmapForSixMonths = Objects.requireNonNull(countriesSummary
+                .get(TravelLogDBHelper.FIRST_SIX_MONTH));
+        if (m_LastSixMonthTextView != null) m_LastSixMonthTextView.setText(
+                buildSummaryString(hashmapForSixMonths));
+        HashMap<String, Integer> hashmapForThisYear = Objects.requireNonNull(countriesSummary
+                .get(TravelLogDBHelper.THIS_YEAR));
+        if (m_CurrentYearTextView != null) m_CurrentYearTextView.setText(
+                buildSummaryString(hashmapForThisYear));
     }
 
     @Override
@@ -87,9 +96,18 @@ public class DashboardFragment extends Fragment {
     public String buildSummaryString(@NonNull HashMap<String, Integer> hashmapForPeriod) {
         String retVal = "";
         for (HashMap.Entry<String,Integer> entry : hashmapForPeriod.entrySet()) {
-            retVal = retVal.concat(entry.getKey() + " - " + ((Integer)entry.getValue()).toString() + "\n");
+            Integer noOfDays = entry.getValue();
+            retVal = retVal.concat(entry.getKey() + " : " + getNoOfDays(noOfDays) + "\n");
         }
         return retVal;
+    }
+
+    private String getNoOfDays(Integer value) {
+        if (value == 1) {
+            return value.toString() + " day.";
+        } else {
+            return value.toString() + " days.";
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

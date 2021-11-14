@@ -6,8 +6,9 @@
         <entry key="myTravelLog/src/main/res/drawable/background_tab.xml" value="0.15729166666666666" />
         <entry key="myTravelLog/src/main/res/layout/activity_main.xml" value="0.14114583333333333" />
         <entry key="myTravelLog/src/main/res/layout/dashboard_fragment.xml" value="0.2703125" />
-        <entry key="myTravelLog/src/main/res/layout/edit_entry_fragment.xml" value="0.2703125" />
+        <entry key="myTravelLog/src/main/res/layout/edit_entry_fragment.xml" value="0.375" />
         <entry key="myTravelLog/src/main/res/layout/entries_list_fragment.xml" value="0.335" />
+        <entry key="myTravelLog/src/main/res/layout/log_entry_list_row.xml" value="0.2703125" />
       </map>
     </option>
   </component>

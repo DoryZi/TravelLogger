@@ -12,13 +12,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 
 import com.countrypicker.CountryPicker;
-import com.countrypicker.CountryPickerListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +30,7 @@ public class EditEntryFragment extends DialogFragment implements OnClickListener
      * A placeholder fragment containing a simple view.
      */
 
+    TextView m_Title = null;
     TextView m_NewCountry = null;
     TextView m_NewDateFrom = null;
     TextView m_NewDateTo = null;
@@ -79,6 +78,7 @@ public class EditEntryFragment extends DialogFragment implements OnClickListener
         View rootView = inflater.inflate(R.layout.edit_entry_fragment, container, false);
 
 
+        m_Title = (TextView) rootView.findViewById(R.id.title_view);
         m_NewCountry = (TextView) rootView.findViewById(R.id.new_entry_country);
         m_NewDateFrom = (TextView) rootView.findViewById(R.id.new_entry_from);
         m_NewDateTo = (TextView) rootView.findViewById(R.id.new_entry_to);
@@ -94,14 +94,14 @@ public class EditEntryFragment extends DialogFragment implements OnClickListener
             TelephonyManager tm = (TelephonyManager) Objects.requireNonNull(getActivity())
                     .getSystemService(Context.TELEPHONY_SERVICE);
             String currentCountryISO = tm.getNetworkCountryIso();
-            Objects.requireNonNull(getDialog()).setTitle("Create New Log Entry");
+            m_Title.setText("Create New Log Entry");
             m_EntryToEdit = new TravelLogEntry(
                     CountryPicker.getCountryFromCode(currentCountryISO, getActivity()),
                     new Date(),
                     new Date());
-            m_DeleteButton.setVisibility(View.GONE);
+            m_DeleteButton.setVisibility(View.INVISIBLE);
         } else {
-            Objects.requireNonNull(getDialog()).setTitle("Edit Log Entry Info");
+            m_Title.setText("Edit Log Entry Info");
             m_DeleteButton.setVisibility(View.VISIBLE);
             m_EntryToEdit = m_dbHelper.findEntry(editEntryId);
         }
@@ -235,7 +235,7 @@ public class EditEntryFragment extends DialogFragment implements OnClickListener
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH));
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         m_DatePicker.show();
 
 
@@ -264,7 +264,7 @@ public class EditEntryFragment extends DialogFragment implements OnClickListener
         cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         cal.set(Calendar.MONTH, monthOfYear);
         cal.set(Calendar.YEAR, year);
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date dateObject = cal.getTime();
         viewToUpdate.setText(SimpleDateFormat.getDateInstance().format(dateObject));
         return dateObject;
