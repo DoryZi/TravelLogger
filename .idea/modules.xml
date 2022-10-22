@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MyTravelLogAS.iml" filepath="$PROJECT_DIR$/MyTravelLogAS.iml" />
-      <module fileurl="file://$PROJECT_DIR$/countryPicker/countryPicker.iml" filepath="$PROJECT_DIR$/countryPicker/countryPicker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/myTravelLog/myTravelLog.iml" filepath="$PROJECT_DIR$/myTravelLog/myTravelLog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TravelLogger.iml" filepath="$PROJECT_DIR$/.idea/modules/TravelLogger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PagerSlidingTabStrip/TravelLogger.PagerSlidingTabStrip.iml" filepath="$PROJECT_DIR$/.idea/modules/PagerSlidingTabStrip/TravelLogger.PagerSlidingTabStrip.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/countryPicker/TravelLogger.countryPicker.iml" filepath="$PROJECT_DIR$/.idea/modules/countryPicker/TravelLogger.countryPicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/myTravelLog/TravelLogger.myTravelLog.iml" filepath="$PROJECT_DIR$/.idea/modules/myTravelLog/TravelLogger.myTravelLog.iml" />
     </modules>
   </component>
 </project>
-

@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -18,8 +17,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.fragment.app.DialogFragment;
+
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,6 +29,7 @@ import java.util.Currency;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class CountryPicker extends DialogFragment implements
@@ -84,7 +87,7 @@ public class CountryPicker extends DialogFragment implements
 	public static Currency getCurrencyCode(String countryCode) {
 		try {
 			return Currency.getInstance(new Locale("en", countryCode));
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 
 		}
 		return null;
@@ -102,7 +105,7 @@ public class CountryPicker extends DialogFragment implements
 	}
 	/**
 	 * Get all countries with code and name from res/raw/countries.json
-	 * 
+	 *
 	 * @return
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -155,7 +158,7 @@ public class CountryPicker extends DialogFragment implements
 			throws java.io.IOException {
 		String base64 = context.getResources().getString(R.string.countries);
 		byte[] data = Base64.decode(base64, Base64.DEFAULT);
-		return new String(data, "UTF-8");
+		return new String(data, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -188,7 +191,7 @@ public class CountryPicker extends DialogFragment implements
 		Bundle args = getArguments();
 		if (args != null) {
 			String dialogTitle = args.getString("dialogTitle");
-			getDialog().setTitle(dialogTitle);
+			Objects.requireNonNull(getDialog()).setTitle(dialogTitle);
 
 			int width = getResources().getDimensionPixelSize(
 					R.dimen.cp_dialog_width);
@@ -204,7 +207,7 @@ public class CountryPicker extends DialogFragment implements
 				.findViewById(R.id.country_picker_listview);
 
 		// Set adapter
-		adapter = new CountryListAdapter(getActivity(), selectedCountriesList);
+		adapter = new CountryListAdapter(Objects.requireNonNull(getActivity()), selectedCountriesList);
 		countryListView.setAdapter(adapter);
 
 		// Inform listener
